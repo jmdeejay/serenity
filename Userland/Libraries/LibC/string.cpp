@@ -184,6 +184,14 @@ void const* memmem(void const* haystack, size_t haystack_length, void const* nee
     return AK::memmem(haystack, haystack_length, needle, needle_length);
 }
 
+// https://pubs.opengroup.org/onlinepubs/9699919799/functions/stpcpy.html
+char* stpcpy(char* dest, char const* src)
+{
+    while ((*dest++ = *src++) != '\0')
+        ;
+    return dest;
+}
+
 // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strcpy.html
 char* strcpy(char* dest, char const* src)
 {
@@ -343,6 +351,27 @@ char* strsignal(int signum)
         return const_cast<char*>("Unknown signal");
     }
     return const_cast<char*>(sys_siglist[signum]);
+}
+
+// https://pubs.opengroup.org/onlinepubs/9699919799/functions/strcasestr.html
+char* strcasestr(char const* haystack, char const* needle)
+{
+    char nch;
+    char hch;
+
+    if ((nch = *needle++) != 0) {
+        nch = (char)tolower((unsigned char)nch);
+        size_t len = strlen(needle);
+        do {
+            do {
+                if ((hch = *haystack++) == 0)
+                    return nullptr;
+            } while ((char)tolower((unsigned char)hch) != nch);
+
+        } while (strncasecmp(haystack, needle, len) != 0);
+        --haystack;
+    }
+    return const_cast<char*>(haystack);
 }
 
 // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strstr.html

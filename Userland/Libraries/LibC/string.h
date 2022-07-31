@@ -36,12 +36,14 @@ void explicit_bzero(void*, size_t) __attribute__((nonnull(1)));
 __attribute__((malloc)) char* strdup(char const*);
 __attribute__((malloc)) char* strndup(char const*, size_t);
 
+char* stpcpy(char* dest, char const* src);
 char* strcpy(char* dest, char const* src);
 char* strncpy(char* dest, char const* src, size_t);
 __attribute__((warn_unused_result)) size_t strlcpy(char* dest, char const* src, size_t);
 
 char* strchr(char const*, int c);
 char* strchrnul(char const*, int c);
+char* strcasestr(char const* haystack, char const* needle);
 char* strstr(char const* haystack, char const* needle);
 char* strrchr(char const*, int c);
 
